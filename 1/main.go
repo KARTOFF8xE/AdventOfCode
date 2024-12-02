@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	input := getinput()
+	input := getInput()
 	lines := strings.Split(input, "\n")
 
 	col0, col1 := getCols(lines)

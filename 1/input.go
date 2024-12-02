@@ -1,6 +1,6 @@
 package main
 
-func getinput() string {
+func getInput() string {
 	return `64256   78813
 46941   56838
 47111   50531
