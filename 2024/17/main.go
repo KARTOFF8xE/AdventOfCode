@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"os"
+	"reflect"
 	"strconv"
 	"strings"
 )
@@ -17,7 +18,7 @@ type Computer struct {
 	progPtr int
 
 	program []int
-	output  []int64
+	output  []int
 }
 
 func main() {
@@ -47,7 +48,11 @@ func main() {
 		computer.program = append(computer.program, itemInt)
 	}
 
-	computer.determineOutput()
+	computer1 := computer
+	computer2 := computer
+	computer1.determineOutput()
+	fmt.Println(strings.Trim(strings.Join(strings.Fields(fmt.Sprint(computer1.output)), ","), "[]"))
+	computer2.getNewRegAFor(computer.regA)
 }
 
 func parseReg(scanner *bufio.Scanner, reg *int64) {
@@ -90,7 +95,6 @@ func (c *Computer) determineOutput() {
 		default:
 		}
 	}
-	fmt.Println(strings.Trim(strings.Join(strings.Fields(fmt.Sprint(c.output)), ","), "[]"))
 }
 
 func (c *Computer) adv(operand int) {
@@ -128,7 +132,7 @@ func (c *Computer) out(operand int) {
 	op := int64(operand)
 	c.evalOperand(&op)
 
-	c.output = append(c.output, op%8)
+	c.output = append(c.output, int(op%8))
 }
 
 func (c *Computer) bdv(operand int) {
@@ -156,5 +160,22 @@ func (c *Computer) evalOperand(operand *int64) {
 	case 7:
 		panic("forbitten State")
 	default:
+	}
+}
+
+func (c *Computer) getNewRegAFor(regANot int64) {
+	regA := int64(61342348)
+	for notOk := true; notOk; notOk = !reflect.DeepEqual(c.output, c.program) {
+		c.output = []int{}
+		c.regA = regA
+		fmt.Println(c.regA)
+		regA++
+		// fmt.Println(regANot)
+		// if c.regA == regANot {
+		// 	continue
+		// }
+
+		c.progPtr = 0
+		c.determineOutput()
 	}
 }
